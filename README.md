@@ -22,32 +22,58 @@ Evaluation project.
 
 Clone the repository:
 
-````bash
+```bash
 git clone https://github.com/d-roncevic/slothui.git
-cd <repo>
+```
 
-``` Install dependencies:
+Select repo
 
+```bash
+cd "slothui"
+```
+
+Install dependencies:
+
+```bash
 npm install
+```
 
-``` Run the dev server:
+Run the dev server:
+
+```bash
 npm run dev
+```
 
-````
+## 🛠️ Tech Stack
 
-🛠️ Tech Stack
+[Vite](https://vite.dev/) – build tool & dev server
 
-Vite
-– build tool & dev server
+[React](https://react.dev/) – UI library
 
-React
-– UI library
+[TypeScript](https://www.typescriptlang.org/) – type safety
 
-TypeScript
-– type safety
+[TailwindCSS](https://tailwindcss.com/) – utility-first CSS framework
 
-TailwindCSS
-– utility-first CSS framework
+[JSONplaceholder](https://jsonplaceholder.typicode.com/) – mock API for demo data
 
-JSONPlaceholder
-– mock API for demo data
+## 📂 Project Structure
+
+```bash
+src/
+├── components/   # Reusable UI components
+├── hooks/        # Custom hooks (e.g. useLocalStorage)
+├── reducers/     # useReducer logic for tasks
+├── App.tsx       # Main app component
+├── main.tsx      # Entry point
+└── index.css     # TailwindCSS entry
+```
+
+## 📦 Notes
+
+This project is based on the official [Vite + React + TypeScript](https://vite.dev/guide/) template
+and extended with TailwindCSS and custom features.
+
+## 📜 License
+
+This project is created for evaluation purposes.
+Feel free to use it as a reference.
