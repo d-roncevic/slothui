@@ -29,7 +29,7 @@ git clone https://github.com/d-roncevic/slothui.git
 Select repo
 
 ```bash
-cd "slothui"
+cd slothui
 ```
 
 Install dependencies:
