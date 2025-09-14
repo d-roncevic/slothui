@@ -1,7 +1,6 @@
-// TaskContext.tsx
 import { createContext, useReducer, type Dispatch, type ReactNode } from 'react';
-import { TaskReducer } from './TaskReducer';
-import type { TaskState, TaskAction } from '../types/task';
+import { TaskReducer } from '../../reducers/TaskReducer';
+import type { TaskState, TaskAction } from '../../types/task';
 
 type TaskContextType = {
   state: TaskState;

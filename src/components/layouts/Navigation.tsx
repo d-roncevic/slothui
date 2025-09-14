@@ -92,7 +92,7 @@ const Navigation: React.FC = () => {
 
   return (
     <motion.aside
-      className={`px-4 max-w-[312px] h-screen flex flex-col gap-8 justify-between border-r border-[#E2E8F0] ${hovering ? 'py-8' : 'py-6 w-20'}`}
+      className={`px-4 w-[312px] h-screen flex flex-col gap-8 justify-between border-r border-[#E2E8F0] ${hovering ? 'py-8' : 'py-6 w-20'}`}
       onMouseEnter={() => setHovering(true)}
       onMouseLeave={() => setHovering(true)}
       animate={asideControls}
@@ -140,7 +140,7 @@ const Navigation: React.FC = () => {
         </AnimatePresence>
 
         {/* Nav Links */}
-        <nav className="flex justify-center flex-col gap-2">
+        <nav className="flex justify-center flex-col gap-2 w-[280px]">
           {links.map((link, index) => {
             return <NavBar key={index} {...link} expanded={hovering} />;
           })}
@@ -153,31 +153,31 @@ const Navigation: React.FC = () => {
           {messageVisibility && (
             <motion.div
               key="message"
-              layout
-              initial={{ opacity: 0, y: -10, scale: 0.98 }}
+              layout="position"
+              initial={{ opacity: 0, y: -10, scale: 1 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -8, scale: 0.98 }}
+              exit={{ opacity: 0, y: -8, scale: 1 }}
               transition={{ duration: D_CHILD, ease: EASE_OUT }}
-              className={`flex p-4 overflow-hidden rounded-[24px] bg-[#F8FAFC] flex-col gap-4 mb-6`}
+              className={`flex w-[280px] p-4 overflow-hidden rounded-[24px] bg-[#F8FAFC] flex-col gap-4 mb-6`}
               role="status"
               aria-live="polite"
             >
               <div className="flex justify-between items-start">
-                <div className="bg-[#E2E8F0] p-2.5 rounded-full">
-                  <TriangleAlert color="#475569" />
+                <div className="bg-[#E2E8F0] p-2.5 rounded-full h-10 w-10 flex items-center justify-center">
+                  <TriangleAlert color="#475569" width={20} />
                 </div>
                 <button className="float right cursor-pointer" onClick={hideMessage}>
                   <X color="#94A3B8" />
                 </button>
               </div>
-              <p className="text-[#475569] font-normal text-sm">
+              <p className="text-[#475569] font-normal text-sm text-left leading-[160%]">
                 Enjoy unlimited access to our app with only a small price monthly
               </p>
               <div className="flex gap-4 justify-start text-sm font-bold">
-                <button className="text-[#475569]" onClick={hideMessage}>
+                <button className="cursor-pointer text-[#475569]" onClick={hideMessage}>
                   Dismiss
                 </button>
-                <button className="text-[#4F46E5]">Go Pro</button>
+                <button className="cursor-pointer text-[#4F46E5]">Go Pro</button>
               </div>
             </motion.div>
           )}

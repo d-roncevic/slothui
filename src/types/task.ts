@@ -1,8 +1,14 @@
 export type Task = {
   id: string;
   title: string;
-  description?: string;
-  status: 'todo' | 'inprogress' | 'done';
+  status: 'reviewed' | 'inprogress' | 'completed';
+};
+
+export type ApiTodo = {
+  userId: number;
+  id: number;
+  title: string;
+  completed: boolean;
 };
 
 export type TaskState = {
@@ -12,4 +18,5 @@ export type TaskState = {
 export type TaskAction =
   | { type: 'ADD_TASK'; payload: Task }
   | { type: 'REMOVE_TASK'; payload: string }
-  | { type: 'UPDATE_TASK'; payload: Task };
+  | { type: 'UPDATE_TASK'; payload: Task }
+  | { type: 'SET_TASKS'; payload: Task[] };

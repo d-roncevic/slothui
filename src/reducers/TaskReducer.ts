@@ -11,6 +11,8 @@ export const TaskReducer = (state: TaskState, action: TaskAction): TaskState => 
         ...state,
         tasks: state.tasks.map((task) => (task.id === action.payload.id ? action.payload : task)),
       };
+    case 'SET_TASKS':
+      return { ...state, tasks: action.payload };
     default:
       return state;
   }

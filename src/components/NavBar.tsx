@@ -15,9 +15,9 @@ const NavBar: React.FC<NavBarProps> = ({ to, icon: Icon, label, badge, expanded 
   return (
     <Link
       to={to}
-      className={`flex ${!expanded && 'justify-center'} justify-between items-center px-2 py-2 rounded hover:bg-[#F8FAFC] ${isActive ? 'rounded-full bg-[#F8FAFC] font-bold' : ''}`}
+      className={`flex ${!expanded && 'justify-center'} justify-between items-center px-3 py-2 rounded hover:bg-[#F8FAFC] ${isActive ? 'rounded-full bg-[#F8FAFC] font-bold' : ''}`}
     >
-      <div className={`flex gap-2`}>
+      <div className={`flex gap-2 items-center`}>
         <Icon size={24} color="#94A3B8" />
         {expanded && <span className="text-[#1E293B] font-bold">{label}</span>}
       </div>
