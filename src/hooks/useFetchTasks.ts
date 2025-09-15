@@ -1,42 +1,67 @@
 import { useEffect, useState } from 'react';
-import type { ApiTodo, Task } from '../types/task';
 import { useTasks } from '../components/context/useTasks';
+import type { Task, Priority } from '../types/task';
 
-export function useFetchTasks(limit = 17) {
-  const [loading, setLoading] = useState<boolean>(true);
+const priorities: Priority[] = [
+  { label: 'Low Priority', color: '#4F46E5', bgColor: '#EEF2FF' },
+  { label: 'OK', color: '#F59E0B', bgColor: '#FFFBEB' },
+  { label: 'High Priority', color: '#F43F5E', bgColor: '#FFF1F2' },
+];
+
+export const useFetchTasks = () => {
+  const { state, dispatch } = useTasks();
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { dispatch } = useTasks();
+
   useEffect(() => {
-    let cancelled = false;
+    if (state.tasks.length > 0) return;
 
-    async function load() {
+    const fetchTasks = async () => {
+      setLoading(true);
       try {
-        console.log('Fetching tasks...');
+        const res = await fetch('https://jsonplaceholder.typicode.com/todos?_limit=12');
+        const data = await res.json();
 
-        const res = await fetch(`https://jsonplaceholder.typicode.com/todos?_limit=${limit}`);
-        const data: ApiTodo[] = await res.json();
+        const tasks: Task[] = data.map((t: any) => {
+          const assigneeCount = Math.floor(Math.random() * 5) + 1;
+          const assignees = Array.from(
+            { length: assigneeCount },
+            () => Math.floor(Math.random() * 70) + 1,
+          );
 
-        if (!cancelled) {
-          const mapped: Task[] = data.map((todo) => ({
-            id: String(todo.id),
-            title: todo.title,
-            status: todo.id % 3 === 0 ? 'reviewed' : todo.id % 3 === 1 ? 'inprogress' : 'completed',
-          }));
+          const statusOptions = ['todo', 'inprogress', 'completed'] as const;
+          const status = statusOptions[t.id % 3];
 
-          dispatch({ type: 'SET_TASKS', payload: mapped });
-        }
+          let progress = 0;
+          if (status === 'inprogress') {
+            progress = Math.floor(Math.random() * 99) + 1; // 1-99
+          } else if (status === 'completed') {
+            progress = 100;
+          }
+
+          // Dodjela prioriteta, random
+          const priority = priorities[Math.floor(Math.random() * priorities.length)];
+
+          return {
+            id: t.id,
+            title: t.title,
+            status,
+            progress,
+            assignees,
+            priority,
+          };
+        });
+
+        dispatch({ type: 'SET_TASKS', payload: tasks });
       } catch (err) {
-        setError((err as Error).message);
+        setError('Failed to fetch tasks');
       } finally {
         setLoading(false);
       }
-    }
-
-    load();
-    return () => {
-      cancelled = true;
     };
-  }, [limit, dispatch]); // ✅ dispatch u dependencies
+
+    fetchTasks();
+  }, [state.tasks, dispatch]);
 
   return { loading, error };
-}
+};

@@ -13,6 +13,13 @@ export const TaskReducer = (state: TaskState, action: TaskAction): TaskState => 
       };
     case 'SET_TASKS':
       return { ...state, tasks: action.payload };
+    case 'UPDATE_PROGRESS':
+      return {
+        ...state,
+        tasks: state.tasks.map((task) =>
+          task.id === action.payload.id ? { ...task, progress: action.payload.progress } : task,
+        ),
+      };
     default:
       return state;
   }
