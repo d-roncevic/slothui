@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useTasks } from '../components/context/useTasks';
+import { useProjects } from '../components/context/useProjects';
 import type { Task, Priority } from '../types/task';
 
 const priorities: Priority[] = [
@@ -8,13 +8,14 @@ const priorities: Priority[] = [
   { label: 'High Priority', color: '#F43F5E', bgColor: '#FFF1F2' },
 ];
 
-export const useFetchTasks = () => {
-  const { state, dispatch } = useTasks();
+export const useFetchTasks = (projectId: string) => {
+  const { state, dispatch } = useProjects();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (state.tasks.length > 0) return;
+    const project = state.projects.find((p) => p.id === projectId);
+    if (!project || (project.tasks && project.tasks.length > 0)) return;
 
     const fetchTasks = async () => {
       setLoading(true);
@@ -34,16 +35,15 @@ export const useFetchTasks = () => {
 
           let progress = 0;
           if (status === 'inprogress') {
-            progress = Math.floor(Math.random() * 99) + 1; // 1-99
+            progress = Math.floor(Math.random() * 99) + 1;
           } else if (status === 'completed') {
             progress = 100;
           }
 
-          // Dodjela prioriteta, random
           const priority = priorities[Math.floor(Math.random() * priorities.length)];
 
           return {
-            id: t.id,
+            id: String(t.id),
             title: t.title,
             status,
             progress,
@@ -52,7 +52,10 @@ export const useFetchTasks = () => {
           };
         });
 
-        dispatch({ type: 'SET_TASKS', payload: tasks });
+        dispatch({
+          type: 'SET_TASKS',
+          payload: { projectId, tasks },
+        });
       } catch (err) {
         setError('Failed to fetch tasks');
       } finally {
@@ -61,7 +64,7 @@ export const useFetchTasks = () => {
     };
 
     fetchTasks();
-  }, [state.tasks, dispatch]);
+  }, [state.projects, projectId, dispatch]);
 
   return { loading, error };
 };

@@ -13,13 +13,6 @@ export type Priority = {
   bgColor: string;
 };
 
-export type ApiTodo = {
-  userId: number;
-  id: number;
-  title: string;
-  completed: boolean;
-};
-
 export type TaskState = {
   tasks: Task[];
 };
@@ -29,4 +22,5 @@ export type TaskAction =
   | { type: 'REMOVE_TASK'; payload: string }
   | { type: 'UPDATE_TASK'; payload: Task }
   | { type: 'UPDATE_PROGRESS'; payload: { id: string; progress: number } }
+  | { type: 'MOVE_TASK'; payload: { id: string; newStatus: 'todo' | 'inprogress' | 'completed' } }
   | { type: 'SET_TASKS'; payload: Task[] };

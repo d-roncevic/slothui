@@ -14,8 +14,10 @@
   box-sizing: border-box;
 }
 
-@media screen and (max-width: 599px) {
-  #app {
-    flex-direction: column;
-  }
+.Toastify__progress-bar {
+  background: #4f46e5 !important;
+}
+
+.Toastify__toast-icon svg {
+  fill: #4f46e5 !important; /* mijenja boju ikone */
 }

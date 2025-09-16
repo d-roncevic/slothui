@@ -1,149 +1,75 @@
 import { useState } from 'react';
-import { useFetchTasks } from '../../hooks/useFetchTasks';
-import { useTasks } from '../context/useTasks';
-import TaskBoard from '../layouts/TaskBoard';
-import {
-  Columns2,
-  HomeIcon,
-  LayoutGrid,
-  Plus,
-  Rows2,
-  Search,
-  TextAlignJustify,
-  Eclipse,
-  ChevronRight,
-  Share,
-  SlidersVertical,
-  ArrowUpZA,
-  ChevronLeft,
-} from 'lucide-react';
+import { HardDriveUpload, Plus, Search, Share2 } from 'lucide-react';
+import { useProjects } from '../context/useProjects';
+import ProjectBoard from '../layouts/ProjectBoard';
+
+const list = [
+  { id: 1, name: 'By Status' },
+  { id: 2, name: 'By Total Tasks' },
+  { id: 3, name: 'Task Due' },
+  { id: 4, name: 'Extra Tasks' },
+  { id: 5, name: 'Tasks Completed' },
+];
 
 const Home = () => {
-  const { loading, error } = useFetchTasks();
-  const { state } = useTasks();
-  const viewList = [
-    { id: 1, icon: LayoutGrid, name: 'Grid view' },
-    { id: 2, icon: TextAlignJustify, name: 'List view' },
-    { id: 3, icon: Columns2, name: 'Column view' },
-    { id: 4, icon: Rows2, name: 'Row view' },
-  ];
-  const [activeView, setActiveView] = useState(viewList[1]);
-
-  const uniqueAssignees = Array.from(
-    new Set(state.tasks.flatMap((task) => task.assignees ?? [])),
-  ).slice(0, 3);
-
-  console.log(state.tasks);
+  const { state } = useProjects();
+  const [activeTab, setActiveTab] = useState<string>('By Total Tasks');
 
   return (
-    <div className="w-full h-full flex flex-col">
-      <header className="shrink-0 border-b border-[#E2E8F0]">
-        <div className="flex px-4 py-6 sm:p-8 sm:flex-row flex-col justify-between gap-5 sm:gap-0 sm:items-center h-[128px] sm:h-20 bg-[#F8FAFC]">
-          <div className="sm:flex gap-2 items-center h-8 hidden">
-            <span className="p-1.5">
-              <HomeIcon size={20} color="#475569" />
-            </span>
-            <span className="text-[#CBD5E1]">
-              <ChevronRight size={20} />
-            </span>
-            <p className="font-bold text-sm text-[#475569]">Dashboard</p>
-            <span className="text-[#CBD5E1]">
-              <ChevronRight size={20} />
-            </span>
-            <p className="font-bold text-sm text-[#475569]">Project</p>
-            <span className="text-[#CBD5E1]">
-              <ChevronRight size={20} />
-            </span>
-            <div className="flex items-center gap-1 text-[#4F46E5]">
-              <Eclipse size={20} color="#4F46E5" />
-              <p className="font-bold">Project PlanetX</p>
-            </div>
-          </div>
-          <div className="sm:hidden gap-2 h-5 flex items-left cursor-pointer">
-            <span className="text-[#CBD5E1]">
-              <ChevronLeft size={20} color="#4F46E5" />
-            </span>
-            <p className="font-bold text-sm text-[#4F46E5]">Back to Project</p>
-          </div>
-          <div className="flex gap-2 h-10 items-center">
-            <Search size={24} color="#475569" />
-            <div className="flex -space-x-2">
-              {uniqueAssignees.map((num) => (
-                <img
-                  key={num}
-                  src={`https://i.pravatar.cc/40?img=${num}`}
-                  alt={`user-${num}`}
-                  className="w-10 h-10 rounded-full border-2 border-white"
-                />
-              ))}
-
-              {uniqueAssignees.length > 5 && (
-                <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 text-xs font-medium text-gray-600 border-2 border-white">
-                  +{uniqueAssignees.length - 5}
-                </div>
-              )}
-            </div>
-            <button className="flex cursor-pointer items-center text-[#475569] h-10 py-2.5 px-4 rounded-full border border-[#CBD5E1] gap-2">
-              <span className="font-bold text-sm">Invite</span>
-              <Plus size={24} color="#475569" />
+    <div className="md:w-full sm:w-[calc(100vw-5rem)]  h-full flex flex-col">
+      <header className="shrink-0 bg-[#F8FAFC] border-b border-[#E2E8F0]">
+        <div className="flex px-4 py-6 sm:p-8 flex-col sm:flex-row justify-between sm:items-center gap-4 sm:gap-0">
+          <p className="text-left text-[#1E293B] font-extrabold text-2xl md:text-3xl">
+            Kanban Dashboard
+          </p>
+          <div className="flex gap-2 h-10">
+            <button className="p-2 cursor-pointer">
+              <Search width={24} color="#475569" />
+            </button>
+            <button className="flex cursor-pointer items-center gap-2 bg-[#4F46E5] text-white py-2.5 px-4 rounded-full">
+              <p className="text-sm font-bold">Share</p> <Share2 width={20} />
+            </button>
+            <button className="w-10 h-10 flex cursor-pointer items-center justify-center p-2 border border-[#CBD5E1] rounded-full">
+              <HardDriveUpload width={24} color="#475569" />
+            </button>
+            <button className="w-10 h-10 flex cursor-pointer items-center justify-center p-2 border border-[#CBD5E1] rounded-full">
+              <Plus width={24} color="#475569" />
             </button>
           </div>
         </div>
-        {/* Project Info */}
-        <div className="h-[236px] sm:h-[162px] pt-6 px-4 sm:p-8 gap-4 flex flex-col sm:flex-row items-start sm:items-center w-full">
-          <img
-            src="placeholder-logo.png"
-            className="sm:w-22 sm:h-22 w-16 h-16"
-            alt="Placeholder logo"
-          />
-          {/* <div className="flex justify-between w-full"> */}
-          <div className="flex flex-col sm:gap-3 w-full">
-            <div className="flex justify-between sm:flex-row flex-col gap-4 sm:gap-0">
-              <h1 className="font-extrabold text-3xl text-[#1E293B] text-left">Project PlanetX</h1>
-              <div className="flex gap-5">
-                <button className="flex gap-1 h-5 text-nowrap">
-                  <LayoutGrid size={20} color="#475569" />
-                  <span className="text-[#475569] font-bold text-sm">Grid view</span>
-                </button>
-                <button className="flex gap-1 h-5 text-nowrap">
-                  <SlidersVertical size={20} color="#475569" />
-                  <span className="text-[#475569] font-bold text-sm">Filter</span>
-                </button>
-                <button className="flex gap-1 h-5 text-nowrap">
-                  <ArrowUpZA size={20} color="#475569" />
-                  <span className="text-[#475569] font-bold text-sm">Sort</span>
-                </button>
-              </div>
-            </div>
-
-            <div className="hidden sm:flex justify-between">
-              <ul className="flex rounded-full h-12 bg-[#F1F5F9] p-1 items-center gap-2.5">
-                {viewList.map((view) => {
-                  const isActive = activeView.id === view.id;
-                  const color = isActive ? '#4F46E5' : '#1E293B';
-                  return (
-                    <li
-                      className={`px-4 py-2 flex gap-2 text-[#475569] font-bold ${activeView.id === view.id ? 'rounded-full bg-white shadow-[0_2px_4px_-2px_rgba(23,23,23,0.06),0_4px_8px_-2px_rgba(23,23,23,0.10)]' : ''}`}
-                      key={view.id}
-                      onClick={() => setActiveView(view)}
-                    >
-                      <view.icon size={20} color={`${color}`} />
-                      {view.name}
-                    </li>
-                  );
-                })}
-              </ul>
-              <button className="flex h-12 rounded-full bg-[#4F46E5] py-3 px-5 gap-2.5 text-nowrap">
-                <span className="font-bold text-base text-white h-5.5">Export Data</span>
-                <Share color="#ffffff" size={20} />
-              </button>
-            </div>
+        <div className="flex justify-between pr-8">
+          <ul className="flex gap-4 px-4 overflow-y-auto md:overflow-hidden h-12">
+            {list.map((item) => {
+              return (
+                <li
+                  key={item.id}
+                  className={`text-nowrap flex items-center gap-2.5 py-3 px-4 font-bold text-base cursor-pointer border-b-2  hover:border-[#4F46E5] hover:text-[#1E293B] ${activeTab === item.name ? 'border-[#4F46E5] text-[#1E293B]' : 'border-[#CBD5E1] text-[#475569]'}`}
+                  onClick={() => setActiveTab(item.name)}
+                >
+                  {item.name}
+                  {item.name === 'By Total Tasks' && (
+                    <span className="text-[#4F46E5] text-xs h-6 font-semibold leading-4 bg-[#EEF2FF] px-2 py-1 rounded-full border border-[#A5B4FC]">
+                      {state.projects.length}
+                    </span>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+          <div className="flex items-center justify-between w-38">
+            <p className="text-[#1E293B] font-bold text-sm">Sort By</p>
+            <select
+              className="flex text-[#475569] font-semibold text-sm rounded-full px-2.5 py-1 border border-[#CBD5E1]"
+              name="sortBy"
+              id="sortBy"
+            >
+              <option value="1">Newest</option>
+            </select>
           </div>
-          {/* </div> */}
         </div>
       </header>
-      <main className="flex-1 sm:overflow-y-auto px-4 py-8 sm:p-8">
-        <TaskBoard tasks={state.tasks} />
+      <main className="flex-1 overflow-y-auto px-4 py-8 sm:p-8">
+        <ProjectBoard projects={state.projects} />
       </main>
     </div>
   );
